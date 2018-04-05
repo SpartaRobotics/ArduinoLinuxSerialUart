@@ -8,12 +8,12 @@
 
     PURPOSE:
     * The purpose of this program to demostrate a simple example of reading
-    and writing data from a linux system to an Arduino. The program setups
+    and writing sting data from a linux system to an Arduino. The program setups
     the serial stream at a selected baud rate (matched with the Arduino's)
-    and initializes communication. The program sends a single character string
-    "7" to the Arduino and the Arduino will read it and then write out to the 
-    serial port. The linux system with this program will read and store the
-    message from the Arduino the "7" and then prints it out to the host screen.
+    and initializes communication. The program sends a string "Hello" to the
+    Arduino which then reads it and concatenates " World!" to the string before
+    sending it back to the host. The host should then print the completed string
+    "Hello Wordl!".
 
 */
 
@@ -35,7 +35,7 @@ void printMessage(char* message, int size); // prints a char array
 int main(int argc, char *argv[])
 {
     int n;
-    char buf[64] = "Hello World!";
+    char buf[64] = "Hello";
 
     serialSetup();
 

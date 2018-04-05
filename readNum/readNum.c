@@ -11,9 +11,9 @@
     and writing data from a linux system to an Arduino. The program setups
     the serial stream at a selected baud rate (matched with the Arduino's)
     and initializes communication. The program sends a single character string
-    "7" to the Arduino and the Arduino will read it and then write out to the 
-    serial port. The linux system with this program will read and store the
-    message from the Arduino the "7" and then prints it out to the host screen.
+    "2" to the Arduino. The Arduino will convert it to an integer add 4 to the
+    value read, which should add up to 6. This value will then write from the
+    Arduino to the host.
 
 */
 
@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
 
     serialSetup();
 
-    write(fd, "7", 1);     // write a single character to the Arduino
+    write(fd, "2", 1);     // write a single character to the Arduino
     n = read(fd, buf, 64); // read the message into buf and record the length
     buf[n] = 0;            // add null terminator to char array
     printMessage(buf, n);  // print the char array message
