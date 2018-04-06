@@ -6,16 +6,6 @@ void setup() {
 }
 
 void loop() {
-
-  if(start > 0)
-  {
-    Serial.println("START");
-
-    if( Serial.read() == '7' )
-    {
-      start = 0;
-    }
-  }
   
   if( Serial.available() > 0 )
   {
@@ -30,14 +20,17 @@ void missionStage()
   if(inByte == '1')
   {
     Serial.println("Starting First Stage");
+    delay(10);
   }
   else if(inByte == '2')
   {
     Serial.println("Starting Second Stage");
+    delay(10);
   }
-  if(inByte == '3')
+  else if(inByte == '3')
   {
     Serial.println("Starting Third Stage");
+    delay(10);
   }
   
 }

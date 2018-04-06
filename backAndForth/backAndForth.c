@@ -30,7 +30,9 @@
 int fd;
 
 void serialSetup(); // Sets up serial communication to the Arduino
-void clientMessage(char* message, int size); // prints a char array
+void clientStart(char *msg);
+void transmitReceive(char *msg, int size);
+void clientMessage(char* msg, int size); // prints a char array
 
 int main(int argc, char *argv[])
 {
@@ -38,33 +40,14 @@ int main(int argc, char *argv[])
     char buf[64] = "temp text";
 
     serialSetup();
-
-	while(strcmp("START",buf) != 0)
-	{
-		n = read(fd, buf, 64);
-		buf[n] = 0;
-	}
-	write(fd, "7", 1);
-	//clientMessage(buf, n);
-	//usleep(1000000);
-
-    write(fd, "1", 1);     // write a single character to the Arduino
-    n = read(fd, buf, 64); // read the message into buf and record the length
-    buf[n] = 0;            // add null terminator to char array
-    clientMessage(buf, n); // print the char array message
-
-    write(fd, "2", 1);     // write a single character to the Arduino
-    n = read(fd, buf, 64); // read the message into buf and record the length
-    buf[n] = 0;            // add null terminator to char array
-    clientMessage(buf, n); // print the char array message
-
-	write(fd, "3", 1);     // write a single character to the Arduino
-    n = read(fd, buf, 64); // read the message into buf and record the length
-    buf[n] = 0;            // add null terminator to char array
-    clientMessage(buf, n); // print the char array message
+   
+    transmitReceive("1", 1);
+    transmitReceive("2", 1);
+    transmitReceive("3", 1);
 
     return 0;
 }
+
 
 void serialSetup()
 {
@@ -72,7 +55,7 @@ void serialSetup()
 
     /* open serial port */
     fd = open("/dev/ttyACM0", O_RDWR | O_NOCTTY);
-    printf("fd opened as %i\n", fd);
+    printf("fd opened as %i\n\n", fd);
     
     /* wait for the Arduino to reboot */
     usleep(3500000);
@@ -93,13 +76,25 @@ void serialSetup()
     tcsetattr(fd, TCSANOW, &toptions);
 }
 
-void clientMessage(char* message, int size)
+void transmitReceive(char *msg, int size)
+{
+    char buf[64];
+
+    write(fd, msg, size);     // write a single character to the Arduino
+    size = read(fd, buf, 64); // read the message into buf and record the length
+    buf[size] = 0;            // add null terminator to char array
+    usleep(10000);
+    clientMessage(buf, size); // print the char array message
+}
+
+void clientMessage(char *msg, int size)
 {
 	int i;
 	
     printf("CLIENT: ");
     for(i = 0; i < size; i++)
     {
-        printf("%c", message[i]);
+        printf("%c", msg[i]);
     }
+    //printf("\n");
 }
