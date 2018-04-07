@@ -41,21 +41,19 @@ int main(int argc, char *argv[])
 
     serialSetup();
    
-    write(fd, "1", 1);     // write a single character to the Arduino
-    n = read(fd, buf, 64); // read the message into buf and record the length
-    buf[n] = 0;            // add null terminator to char array
-    usleep(10000);
-    clientMessage(buf, n);
-
-
-    if( strcmp(buf, "hello world!\r\n\0") == 0) 
+    while( !(strcmp(buf, "START!\r\n\0") == 0) )
     {
-        printf("MATCH!\n");
+        write(fd, "0", 1);
+        n = read(fd, buf, 64); // read the message into buf and record the length
+        buf[n] = 0;            // add null terminator to char array
+        usleep(10000);
     }
-    else
-    {
-        printf("NO MATCH!\n");
-    }
+
+    transmitReceive("1", 1);
+    transmitReceive("2", 1);
+    transmitReceive("3", 1);
+
+    
     
     return 0;
 }

@@ -6,12 +6,16 @@ void setup() {
 }
 
 void loop() {
-  
-  if( Serial.available() > 0 )
-  {
-    Serial.println("hello world!");
-    Serial.read();
-  }
+
+    if( Serial.available() > 0)
+    {
+      inByte = Serial.read();
+
+      if( inByte == '0' )
+        Serial.println("START!");
+      else
+        missionStage();
+    }
 
 }
 
